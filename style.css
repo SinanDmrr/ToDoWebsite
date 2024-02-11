@@ -1,0 +1,184 @@
+:root{
+    /*Erstellung eine Farbpalette für das gesamte Webseiten Design*/
+    --background: #101114;
+    --primary-color: #1C1D20;
+    --secondary-color: #4A4D57;
+    --accent-color: #00FFC4;
+    --text-color: #F9F9F9;
+}
+
+*{
+    /*Allgemein gültige Werte*/
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    /*Werte die für das HTML gültig sind z.B. bei "rem" Werte bezieht man sich auf die Font-size hier*/
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16pt;
+    color: var(--text-color);
+}
+
+body{
+    min-height: 100vh; /* Viewport height  */
+    padding: 10px;
+    background-color: var(--background);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1{
+    margin-top: 100px;
+    margin-bottom: 20px;
+    font-size: 3rem; /*rem = 3x so groß wie die allg. html schriftgröße (16pt -> 1pt = 1,33px)*/
+    font-weight: 800; /*700 = Bold und 800 ist etwas dicker*/
+    text-transform: uppercase;  /*Wandelt den Text um in Großbuchstaben*/
+    text-shadow: 2px 2px 4px white; /*Erstellt einen Schatten mit Blur effekt und in Weiß*/
+    text-align: center;
+    color: var(--accent-color);
+}
+
+.wrapper{
+    /*Der Bereich wo unsere Inputs und To Dos aufgelistet werden*/
+    width: 700px;   /*Maximale Breite sind 700px*/
+    max-width: 100%;    /*Wenn das Endgerät wie z.B. ein Smartphone keine 700px breite hat wird 100% der Breite genutz*/
+    display: flex;  /*Macht den Div "Wrapper" zu einem Flexbox*/
+    flex-direction: column; /*Elemente im Flexbox Div werden untereinander sortiert*/
+    gap: 10px;
+}
+
+#todo-input{
+    /*Eingabefeld für die Todos*/
+    box-sizing: border-box; /*Gewährleistet das die Border und Paddings nach innenhin berechnet werden nicht nach außen*/
+    /*Das heißt bei bei einer Width von 500px ist es mit padding und border 500px und nicht 500px + border px + padding px*/
+    padding: 12px 20px; /*Oben/Unten 12px, Rechts/Links 20px*/
+    width: 100%;    /*Richtet sich an dem Wrapper aus (700px)*/
+    background: none;
+    border: 2px solid var(--secondary-color);
+    border-radius: 500px;
+    font: inherit;  /*Erbt die Schriftart seines Elternelements*/
+    color: var(--text-color);   /*Nicht der Placeholder sondern der Text den der User eingibt*/
+    caret-color: var(--accent-color);   /*Der Cursor im Inputfeld hat nun diese Farbe anstatt defaul Weiß*/
+}
+
+#todo-input:focus{
+    outline: none; /*Entfernt den Focus also den Weißen Rahmen der erscheint wenn man ins Inputfeld klickt*/
+}
+
+form{
+    position: relative; /*Nun richten sich alle absoluten Kindelemnte im form am Form aus*/
+}
+
+#add-button{
+    position: absolute; /*Element wird realtiv zu seinem nächsten Elternelement positioniert, wenn keins vorhanden ist dann das HTML*/
+    /*Da wird form position auf relativ gesetzt haben geht unser absolut nun relativ vom Form aus*/
+    top: 0; /*Befindet sich im Abstand von 0 nach Oben des Übergeordneten Elements*/
+    right: 0; /*Befindet sich im Abstand von 0 nach Rechts des Übergeordneten Elements*/
+    background-color: var(--accent-color);
+    height:100%;
+    padding: 0 30px;
+    border: none;
+    border-radius: 1000px;  /*Sorgt dafür das es ein abgerundeter Button wird*/
+    font:inherit;
+    font-weight: 600;
+    color: var(--background);
+    cursor: pointer;    /*Cursor wird ein Pointer / Zeigefinger wenn man über den Button geht*/
+    content: "+";
+}
+
+.todo{
+    margin-bottom: 10px;
+    padding:0 16px;
+    background-color: var(--primary-color);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.todo .todo-text {
+    padding: 15px;
+    padding-right: 0;
+    flex-grow: 1;   /*Dadurch das das Eltern Teil "Todo" ein Flex Box ist wird mit flex-grow im
+    Kindelement das Kindelement gezwungen den gesamten Platz ein zu nehmen und drück die anderen Kinder weg.
+    Kindelemente in Todo: Checkbox, SVG Check, todo-text und SVG Delete */
+}
+
+.delete-button{
+    padding: 5px;
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.delete-button:hover svg{
+    fill:red;
+}
+
+.delete-button svg{
+    transition: 500ms ease;
+}
+
+.custom-checkbox{
+    border:2px solid var(--accent-color);
+    border-radius: 50%;
+    /*min height und width damit egal wie klein das Fenster wird dieser Kreis nicht zusammen gedrückt wird
+    und somit am ende zu einem Oval geformt wird*/
+    min-height: 20px;
+    min-width: 20px;
+    display: flex;  
+    justify-content: center;
+    align-items: center;    
+    flex-shrink: 0; /*Verhindert das ander Elemente dieses Element zum Schrumpfen bringen dürften (Zusammenzustauchen)*/
+    transition: 500ms ease; /*Transition verzögern die änderung sodass es dynamischer ausschaut*/
+    cursor: pointer;
+}
+
+/*Input Checkboxfeld, wenn diese Checkt also ausgewählt ist dann soll das geschwister element (~) .custom-checkbox*/
+input[type="checkbox"]:checked ~ .custom-checkbox{
+    background-color: var(--accent-color);  /*Wenn gecheckt dann füllt sich der Kreis */    
+}
+/*Input Checkboxfeld, wenn diese Checkt also ausgewählt ist dann soll das IM geschwister element (~) .custom-checkbox enthaltene SVG*/
+input[type="checkbox"]:checked ~ .custom-checkbox svg{
+    fill:var(--primary-color)
+}
+/*Wenn Checkbox Checked wird Geschwisterelement .todo-text gewählt*/
+input[type="checkbox"]:checked ~ .todo-text{
+    text-decoration: line-through;  /*Linie durch den Text*/
+    color: var(--secondary-color);  /*Textfarbe in Grau*/
+    transition: 500ms ease; /*Transition verzögern die änderung sodass es dynamischer ausschaut*/
+}
+/*Das Checkbox Feld wird ausgeblendet im HTML*/
+input[type="checkbox"]{
+    display: none;
+}
+
+/*RESPONSIV MACHEN*/
+@media(max-width:500px){
+    /*Smartphones sind unter 500px also gilt für die dann dieser mediaquery*/
+    html{
+        font-size: 12pt;
+    }
+    #add-button{
+        position: unset;    /*Oben gesetzte Positon absolut um den Button in das Inputfeld zu bekommen wird hier entnommen*/ 
+        width: 100%;
+        margin-top: 10px;
+        padding: 15px;
+        height: auto;
+        content: "";
+        color: transparent;
+    }
+    h1{
+        margin-top: 15px;
+        font-size: 15vw;
+    }
+    #add-button::after{
+        color: var(--primary-color);
+        font-weight: 700;
+        content: "Hinzufügen";
+    }
+}
